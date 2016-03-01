@@ -1,6 +1,7 @@
 # Magnum
 
 > 原文網址：[OpenStack Magnum Wiki](https://wiki.openstack.org/wiki/Magnum)
+> UnitedStack 有云：[Magnum六問六答，OpenStack已為容器普及做好準備](https://www.ustack.com/news/openstack-magnum-qa/)
 
 
 Magnum 由 OpenStack Container Team 開發的 container orchestration engines，像是 Docker 和 Kubernetes 可作為 OpenStack 上第一類資源開發的 OpenStack API 服務。Magnum 使用 Heat 來編配(orchestrate) OS 映像檔(image)，其中包含 Docker 和 Kubernetes，並依照叢集配置執行在任何的虛擬機或裸機(bare metal)中。以下為5分鐘的 Magnum Demo 影片。
@@ -76,4 +77,4 @@ Magnum 為 OpenStack 雲端營運商(公有或私有)提供容器(containers)主
 不可以，Docker Heat resource 並不提供資源調度或者容器技術使用的選擇，它是專門針對 Docker 且使用 Glance 來儲存容器映像檔(container images)，它目前不允許分層的映像檔的功能，相較於分層的映像檔基於本地快取的映像檔，這可能導致需要較長的時間啟動容器(containers)。Magnum 充分利用 Docker 速度上的好處。
 
 #### 6) 在 Magnum 中，何謂 multi-tenancy(是 Magnum 安全性)?
-透過 Magnum 建立的資源，像是容器(containers)、Services、Pods、Buys 等，僅能被建立它們的租戶的使用者查看與存取。Bays 是不可以分享的，這代表 neighboring tenates 它們的容器(containers)是運行在不同的核心(kernel)。這是一個關鍵的安全性功能，允許容器(containers)屬於同一租戶是緊密包在相同的 Pods 或 Buys，但是在不同租户之間各自運行獨立的核心（在不同的 Nova instances）。這不同於使用沒有 Magenum 的 Kubernetes 系統，其設計僅提供一個單租戶環境，將安全隔離設計留给了系統實現者。。Magnum 提供了與 Nova 一樣的安全性隔離；當運行虛擬機屬於不同租戶在相同計算節點上。
+透過 Magnum 建立的資源，像是容器(containers)、Services、Pods、Buys 等，僅能被建立它們的租戶的使用者查看與存取。Bays 是不可以分享的，這代表 neighboring tenates 它們的容器(containers)是運行在不同的核心(kernel)。這是一個關鍵的安全性功能，允許容器(containers)屬於同一租戶是緊密包在相同的 Pods 或 Buys，但是在不同租户之間各自運行獨立的核心（在不同的 Nova instances）。這不同於使用沒有 Magenum 的 Kubernetes 系統，其設計僅提供一個單租戶環境，將安全隔離設計留给了系統實現者。Magnum 提供了與 Nova 一樣的安全性隔離；當運行虛擬機屬於不同租戶在相同計算節點上。
