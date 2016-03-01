@@ -61,10 +61,10 @@ Bay Create/Update/Delete
 
 ## 常見問題
 #### 1) Magnum 與 Nova 之間的差異？
-Magnum 提供一個專用的 API 來管理應用程式的容器(containers)，而其中與 Nova(machine) instance 最大的差異是生命週期與操作。實際上我們使用 Nova instances 來執行我們應用程式的容器(containers)。
+Magnum 提供一個專用的 API 來管理應用程式的容器(containers)，而其中與 Nova(machine) instance 最大的差異是生命週期與操作。實際上 Magnum 使用 Nova instances 來執行我們應用程式的容器(containers)。
 
 #### 2) Magnum 與 Docker 和 Kubernetes 之間的不同？
-Magnum 提供一個非同步的 API 且與 Keystone 兼容以及完整的多租戶(multi-tenancy)實現。它並不會對內部執行編配(orchestration)，而需依賴於 OpenStack Orchestration。Magnum 同時利用 Kubernetes 與 Docker 作為其中元件。
+Magnum 提供一個可與 Keystone 和多租戶(multi-tenancy)部署兼容的非同步 API。它並不會對內部執行編配(orchestration)，而需依賴於 OpenStack Orchestration。Magnum 同時利用 Kubernetes 與 Docker 作為其中元件。
 
 #### 3) 這與 Nova-Docker 相同嗎？
 並不相同，對於 Nova 來說 Nova-Docker 是一個 virt driver，允許容器(containers)建立如同 Nova instances，若您想將你的容器(containers)視為輕量級虛擬機，這種情況下 Nova-Docker 是非常適合的。Magnum 提供了一些超出 Nova API 能處理範圍的容器特定功能並實現了自己的 API，而表面上這些特徵在某種程度上是與其他 OpenStack 服務一致。使用 Magnum 啟動的容器(containers)是透過 Heat 執行在 Nova instance 之上。
@@ -73,7 +73,7 @@ Magnum 提供一個非同步的 API 且與 Keystone 兼容以及完整的多租�
 Magnum 為 OpenStack 雲端營運商(公有或私有)提供容器(containers)主機代管服務給雲端使用者的解決方案。Magnum 簡化與 OpenStack 整合需求，並允許雲端使用者可以啟動雲端資源，像是 Nova instances、Cinder Volumes、Trove Databases 等，也可以建立應用程式在容器(containers)之中，提供超越現有雲端資源的高級功能的範圍。用於建立 IaaS 資源的身份驗證也可用於 Magnum 來建立容器化(containerized)的應用程式。以下為高級功能可用於 Magnum 的範例，擴展應用程式至特定虛擬機數量，而當錯誤事件發生可以重新產生您的應用程式，且比虛擬機更緊密的封裝您的應用程式。
 
 #### 5) 若我使用 Heat 中的 Docker resource 是否會得到相同的事情？
-並不相同，Docker Heat resource 並不提供資源調度或者容器技術使用的選擇，它是專門針對 Docker 且使用 Glance 來儲存容器映像檔(container images)，它目前不允許分層的映像檔的特點，相較於分層的映像檔基於本地快取的映像檔，這可能導致需要較長的時間啟動容器(containers)。Magnum 充分利用 Docker 速度上的好處。
+不可以，Docker Heat resource 並不提供資源調度或者容器技術使用的選擇，它是專門針對 Docker 且使用 Glance 來儲存容器映像檔(container images)，它目前不允許分層的映像檔的功能，相較於分層的映像檔基於本地快取的映像檔，這可能導致需要較長的時間啟動容器(containers)。Magnum 充分利用 Docker 速度上的好處。
 
 #### 6) 在 Magnum 中，何謂 multi-tenancy(是 Magnum 安全性)?
-透過 Magnum 建立的資源，像是容器(containers)、Services、Pods、Buys 等，僅能被建立它們的租戶的使用者查看與存取。Bays 是不可以分享的，這代表 neighboring tenates 它們的容器(containers)是運行在不同的核心(kernel)。這是一個關鍵的安全性功能，允許容器(containers)屬於同一租戶是緊密包在相同的 Pods 或 Buys，但運行再不同的核心(在不同的 Nova instances)於不同租戶之間。這不同於使用沒有 Magenum 的 Kubernetes 系統，其目的僅有一個單一租戶的使用，並且設計並實現離開安全性隔離。Magnum 提供了與 Nova 一樣的安全性隔離；當運行虛擬機屬於不同租戶在相同計算節點上。
+透過 Magnum 建立的資源，像是容器(containers)、Services、Pods、Buys 等，僅能被建立它們的租戶的使用者查看與存取。Bays 是不可以分享的，這代表 neighboring tenates 它們的容器(containers)是運行在不同的核心(kernel)。這是一個關鍵的安全性功能，允許容器(containers)屬於同一租戶是緊密包在相同的 Pods 或 Buys，但是在不同租户之間各自運行獨立的核心（在不同的 Nova instances）。這不同於使用沒有 Magenum 的 Kubernetes 系統，其設計僅提供一個單租戶環境，將安全隔離設計留给了系統實現者。。Magnum 提供了與 Nova 一樣的安全性隔離；當運行虛擬機屬於不同租戶在相同計算節點上。
